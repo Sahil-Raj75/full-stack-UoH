@@ -3,13 +3,14 @@ import { useState } from 'react'
 
 const Button = (props)=>{
   return(
-    <div>
-      <button onClick={props.newAnecdote}>next anecdote</button>
-    </div>
+    <>
+      <button onClick={props.run}>{props.text}</button>
+    </>
   )
 }
 
 const App = () => {
+
   const anecdotes = [
     'If it hurts, do it more often.',
     'Adding manpower to a late software project makes it later!',
@@ -20,17 +21,33 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
+  const totalAnecdotes = anecdotes.length; 
+  const [points, setPoints] = useState(new Array(totalAnecdotes).fill(0))
+  console.log(points);
    
   const [selected, setSelected] = useState(0)
+  const [voteId, setVoteId] = useState(0);
   const getRandomAnecdote = ()=>{
     // const latest = anecdotes[(Math.floor(Math.random() * anecdotes.length))];
     const latest = (Math.floor(Math.random() * anecdotes.length));
+    console.log(latest);
     setSelected(latest);
+    setVoteId(latest);
   }
+
+  const vote = ()=>{
+    console.log(voteId);
+    const copy = [...points];
+    copy[voteId]++;
+    setPoints(copy); 
+  }
+
   return (
     <div>
-      {anecdotes[selected]}
-      <Button newAnecdote={getRandomAnecdote}/>
+      {anecdotes[selected]}<br></br>
+      has {points[voteId]} votes.<br></br>
+      <Button run={getRandomAnecdote} text={"next anecdote"}/>
+      <Button run={vote} text={"vote"}/>
     </div>
   )
 }
