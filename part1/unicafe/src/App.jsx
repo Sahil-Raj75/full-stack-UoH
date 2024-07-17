@@ -5,67 +5,54 @@ const Button = (props)=>{
     <>
       <button onClick={props.handleClick}>{props.text}</button>
     </>
+
   )
 }
 
-const StatisticLine = (props)=>{
-  
-  return(<>
-    <p>{props.text} {props.value}</p>
-  </>)
-  
-}
+const StatisticLine = (props) => (
+  <tr>
+    <td>{props.text}</td>
+    <td>{props.value}</td>
+  </tr>
+);
 
-const Stats = (props)=>{
-  if(props.total===0){
-    return(
+const Stats = (props) => {
+  if (props.total === 0) {
+    return (
       <div>
         No feedback given
       </div>
-    )
-  }else{
-    return(
-      <>
-        <StatisticLine text={"good"} value={props.good}/>
-        <StatisticLine text={"neutral"} value={props.neutral}/>
-        <StatisticLine text={"bad"} value={props.bad}/>
-        <StatisticLine text={"total"} value={props.good + props.bad + props.neutral}/>
-        <Average net={props.net} total={props.total}/>
-        <Percentage total={props.total} sub={props.good}/>
-      </>
-    )
+    );
+  } else {
+    return (
+      <table>
+        <tbody>
+          <StatisticLine text="good" value={props.good} />
+          <StatisticLine text="neutral" value={props.neutral} />
+          <StatisticLine text="bad" value={props.bad} />
+          <StatisticLine text="total" value={props.good + props.bad + props.neutral} />
+          <Average net={props.net} total={props.total} />
+          <Percentage total={props.total} sub={props.good} />
+        </tbody>
+      </table>
+    );
   }
-}
+};
 
-const Average = (props)=>{
-  if(props.total === 0){
-    return(<>
-      <p>average {0}</p>
-    </>)
-  }else{
-    return(
-      <>
-        <p>average {props.net/props.total}</p>
-      </>
-    )
-  }
-}
+const Average = (props) => (
+  <tr>
+    <td>average</td>
+    <td>{props.total === 0 ? 0 : props.net / props.total}</td>
+  </tr>
+);
 
-const Percentage = (props)=>{
-  if(props.total === 0){
-    return(
-      <div>
-        positive {0}
-      </div>
-    )
-  }else{
-    return(
-      <div>
-        positive {(props.sub/props.total)*100}
-      </div>
-    )
-  }
-}
+const Percentage = (props) => (
+  <tr>
+    <td>positive</td>
+    <td>{props.total === 0 ? 0 : (props.sub / props.total) * 100}</td>
+  </tr>
+);
+
 
 const App = ()=>{
   const [good, setGood] = useState(0);
