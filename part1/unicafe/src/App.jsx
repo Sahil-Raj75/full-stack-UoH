@@ -7,8 +7,13 @@ const Button = (props)=>{
     </>
   )
 }
+<<<<<<< HEAD
 
 const Display = (props)=>{
+=======
+// component already built during step 2
+const Stats = (props)=>{
+>>>>>>> a30354754ded91cf8951fabe9f7d4514c9d4e136
   
   return(<>
     <p>{props.text} {props.value}</p>
