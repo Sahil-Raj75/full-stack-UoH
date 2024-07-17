@@ -8,12 +8,33 @@ const Button = (props)=>{
   )
 }
 
-const Stats = (props)=>{
+const Display = (props)=>{
   
   return(<>
     <p>{props.text} {props.value}</p>
   </>)
   
+}
+
+const Stats = (props)=>{
+  if(props.total===0){
+    return(
+      <div>
+        No feedback given
+      </div>
+    )
+  }else{
+    return(
+      <>
+        <Display text={"good"} value={props.good}/>
+        <Display text={"neutral"} value={props.neutral}/>
+        <Display text={"bad"} value={props.bad}/>
+        <Display text={"total"} value={props.good + props.bad + props.neutral}/>
+        <Average net={props.net} total={props.total}/>
+        <Percentage total={props.total} sub={props.good}/>
+      </>
+    )
+  }
 }
 
 const Average = (props)=>{
@@ -30,6 +51,22 @@ const Average = (props)=>{
   }
 }
 
+const Percentage = (props)=>{
+  if(props.total === 0){
+    return(
+      <div>
+        positive {0}
+      </div>
+    )
+  }else{
+    return(
+      <div>
+        positive {(props.sub/props.total)*100}
+      </div>
+    )
+  }
+}
+
 const App = ()=>{
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
@@ -42,7 +79,6 @@ const App = ()=>{
     setNet(net + 1);
     console.log(net);
     setTotal(total+1);
-
   }
 
   const handleBad = ()=>{
@@ -57,21 +93,7 @@ const App = ()=>{
     setTotal(total+1);  
 
   }
-  const Percentage = (props)=>{
-    if(props.total === 0){
-      return(
-        <div>
-          positive {0}
-        </div>
-      )
-    }else{
-      return(
-        <div>
-          positive {(good/total)*100}
-        </div>
-      )
-    }
-  }
+
 
   return(
     <div>
@@ -81,16 +103,10 @@ const App = ()=>{
       <Button handleClick={handleBad} text={"bad"}/>
 
       <h1>statistics</h1>
-      <Stats text={"good"} value={good}/>
-      <Stats text={"neutral"} value={neutral}/>
-      <Stats text={"bad"} value={bad}/>
-      <Stats text={"total"} value={good + bad + neutral}/>
-      <Average net={net} total={total}/>
-      <Percentage total={total} good={good}/>
-
+      <Stats total={total} good={good} bad={bad} neutral={neutral}
+      net={net}/>
     </div>
   )
 
 }
-
 export default App
