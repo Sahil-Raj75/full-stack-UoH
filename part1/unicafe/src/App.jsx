@@ -7,7 +7,7 @@ const Button = (props)=>{
     </>
   )
 }
-
+// component already built during step 2
 const Stats = (props)=>{
   
   return(<>
