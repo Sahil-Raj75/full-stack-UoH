@@ -22,6 +22,7 @@ const Content = ({ parts }) =>
 
 const Course = (props)=>{
   const {course} = props;
+  let sumOfExercises = 0;
   return(
     <div>
       <h1>{course.name}</h1>
@@ -30,6 +31,12 @@ const Course = (props)=>{
           {part.name} {part.exercises}
         </p>
       ))}
+      <p>
+      {course.parts.forEach((part)=>{
+        sumOfExercises+=part.exercises;
+      })}
+      <strong>Total of {sumOfExercises} exercises</strong>
+      </p>
     </div>
   )
 }
