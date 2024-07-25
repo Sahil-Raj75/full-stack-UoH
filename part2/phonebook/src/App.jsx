@@ -5,10 +5,16 @@ import Contact from './components/Contact'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    { name: 'Roger' }
   ]) 
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
+  const [searchField, setSearchField] = useState('')
+
+  const searchResult = persons.filter((person)=>{
+    return person.name.startsWith(searchField);
+  })
+
 
   const addName = (event)=>{
     if(persons.some((person) => person.name === newName)){
@@ -30,18 +36,26 @@ const App = () => {
     }
   }
   const handleNameChange = (event)=>{
-    console.log(event.target.value);
+    // console.log(event.target.value);
     setNewName(event.target.value);
   }
   
   const handlePhoneChange = (event)=>{
-    console.log(event.target.value);
+    // console.log(event.target.value);
     setNewPhone(event.target.value);
+  }
+
+  const handleSearch = (event)=>{
+    console.log(event.target.value);
+    setSearchField(event.target.value);
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>filter shown with <input value={searchField} onChange={handleSearch}/>
+      </div>
+      <h2>add a new</h2>
       <form onSubmit={addName}>
         <div>
           name: <input value={newName} onChange={handleNameChange}/>
@@ -56,7 +70,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <ul>
-      {persons.map((person)=><Contact key={person.id} contact={person}/>)}
+      {searchResult.map((person)=><Contact key={person.id} contact={person}/>)}
       </ul>
     </div>
   )
