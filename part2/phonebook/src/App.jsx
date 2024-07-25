@@ -2,7 +2,6 @@ import { useState } from 'react'
 import Contact from './components/Contact'
 
 
-
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas' }
@@ -10,7 +9,12 @@ const App = () => {
   const [newName, setNewName] = useState('')
 
   const addName = (event)=>{
-    event.preventDefault();
+    if(persons.some((person) => person.name === newName)){
+      event.preventDefault();
+      alert("This name already exists");
+      setNewName(''); 
+    }else{
+      event.preventDefault();
     const newContact = {
       name:newName,
       id:String(persons.length + 1)
@@ -18,6 +22,8 @@ const App = () => {
     setPersons(persons.concat(newContact));
     console.log(persons);
     setNewName('');
+
+    }
   }
   const handleNameChange = (event)=>{
     console.log(event.target.value);
