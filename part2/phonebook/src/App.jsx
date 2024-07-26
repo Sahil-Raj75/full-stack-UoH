@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Contact from './components/Contact'
 import Filter from './components/Filter'
 import PersonForms from './components/PersonForms'
 import Numbers from './components/Numbers'
+import axios from 'axios'
 
 
 const App = () => {
@@ -54,6 +55,17 @@ const App = () => {
     console.log(event.target.value);
     setSearchField(event.target.value);
   }
+
+  useEffect(()=>{
+    console.log("effect");
+    axios
+    .get('http://localhost:3001/persons')
+    .then(response=>{
+      console.log('promise fulfilled');
+      setPersons(response.data);
+    })
+
+  },[])
 
   return (
     <div>
