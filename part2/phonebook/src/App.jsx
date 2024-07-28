@@ -4,6 +4,7 @@ import PersonForms from './components/PersonForms'
 import Numbers from './components/Numbers'
 import axios from 'axios'
 import Phone from './services/phone'
+import Notification from './components/Notification'
 
 
 
@@ -12,6 +13,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [searchField, setSearchField] = useState('')
+  const [message, setMessage] = useState('sample message')
 
   const searchResult = persons.filter((person)=>{
     return person.name.startsWith(searchField);
@@ -37,7 +39,12 @@ const App = () => {
           Phone
           .updateContact(existing)
           .then(data=>{
-            console.log("update success. woohooo!")
+            console.log("update success. woohooo!");
+            setMessage(`Updated ${data.name}` )
+            setTimeout(()=>{
+              setMessage(null);
+            },2000);
+              
           })
         }
     }else{
@@ -53,6 +60,9 @@ const App = () => {
       .then(phoneData=>{
         console.log(phoneData);
         setPersons(persons.concat(phoneData));
+        setTimeout(()=>{
+          setMessage(`Added ${newContact.name}`)
+        })
         setNewName('');
         setNewPhone('');
       })
@@ -93,6 +103,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={message}/>
       <h2>Phonebook</h2>
 
       <Filter searchField={searchField} handleSearch={handleSearch}/>
