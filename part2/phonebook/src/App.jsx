@@ -26,10 +26,20 @@ const App = () => {
   }, [])
 
   const addName = (event)=>{
-    if(persons.some((person) => person.name === newName)){
+    const existing = persons.find((person) => person.name === newName);
+    if(existing){
       event.preventDefault();
-      alert(`${newName} is already added to the phonebook`);
-      setNewName(''); 
+      if(window.confirm(`${newName} is already added to the phonebook. Do you want
+        to update contact information?`))
+        {
+          setNewPhone(event.target.value)
+          existing.number = newPhone;
+          Phone
+          .updateContact(existing)
+          .then(data=>{
+            console.log("update success. woohooo!")
+          })
+        }
     }else{
       event.preventDefault();
     const newContact = {
@@ -69,7 +79,6 @@ const App = () => {
         setPersons(persons.filter(contact=>contact.id!==id));
       });
       console.log("deletion successful.")
-
     }
   }
 

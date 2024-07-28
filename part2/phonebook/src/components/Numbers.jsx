@@ -4,7 +4,9 @@ const Numbers = ({searchResult, deleteContact})=>{
     return(<>
       <h2>Numbers</h2>
       <ul>
-      {searchResult.map((person)=><Contact key={person.id} contact={person}
+      {searchResult.map(
+        (person)=>
+        <Contact key={person.id} contact={person}
       deleteContact={deleteContact}/>)}
       </ul>   
     </>)

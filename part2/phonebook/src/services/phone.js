@@ -21,7 +21,12 @@ const getAll = () => {
     return request.then(response=>response.data)
   }
 
+  const updateContact = (contact)=>{
+    const request = axios.put(`${baseUrl}/${contact.id}`, {...contact, "number":contact.number})
+    return request.then(response=>response.data)
+  }
+
   
   export default { 
-    getAll, create, update, removeContact 
+    getAll, create, update, removeContact ,updateContact
   }
