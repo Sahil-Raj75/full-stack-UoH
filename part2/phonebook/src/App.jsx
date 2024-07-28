@@ -4,15 +4,11 @@ import Filter from './components/Filter'
 import PersonForms from './components/PersonForms'
 import Numbers from './components/Numbers'
 import axios from 'axios'
+import Phone from './services/phone'
 
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ])
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [searchField, setSearchField] = useState('')
@@ -21,6 +17,13 @@ const App = () => {
     return person.name.startsWith(searchField);
   })
 
+  useEffect(() => {
+    Phone
+      .getAll()
+      .then(initialNotes => {
+        setPersons(initialNotes)
+      })
+  }, [])
 
   const addName = (event)=>{
     if(persons.some((person) => person.name === newName)){
@@ -34,25 +37,26 @@ const App = () => {
       phone:newPhone,
       id:String(persons.length + 1)
     }
-    setPersons(persons.concat(newContact));
-    console.log(persons);
-    setNewName('');
-    setNewPhone('');
-
+    
+    Phone
+    .create(newContact)
+      .then(phoneData=>{
+        console.log(phoneData);
+        setPersons(persons.concat(phoneData));
+        setNewName('');
+        setNewPhone('');
+      })
     }
   }
   const handleNameChange = (event)=>{
-    // console.log(event.target.value);
     setNewName(event.target.value);
   }
   
   const handlePhoneChange = (event)=>{
-    // console.log(event.target.value);
     setNewPhone(event.target.value);
   }
 
   const handleSearch = (event)=>{
-    console.log(event.target.value);
     setSearchField(event.target.value);
   }
 
@@ -61,10 +65,8 @@ const App = () => {
     axios
     .get('http://localhost:3001/persons')
     .then(response=>{
-      console.log('promise fulfilled');
       setPersons(response.data);
     })
-
   },[])
 
   return (
