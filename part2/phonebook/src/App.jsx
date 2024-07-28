@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import Contact from './components/Contact'
 import Filter from './components/Filter'
 import PersonForms from './components/PersonForms'
 import Numbers from './components/Numbers'
 import axios from 'axios'
 import Phone from './services/phone'
+
 
 
 const App = () => {
@@ -20,8 +20,8 @@ const App = () => {
   useEffect(() => {
     Phone
       .getAll()
-      .then(initialNotes => {
-        setPersons(initialNotes)
+      .then(initialContacts => {
+        setPersons(initialContacts)
       })
   }, [])
 
@@ -34,7 +34,7 @@ const App = () => {
       event.preventDefault();
     const newContact = {
       name:newName,
-      phone:newPhone,
+      number:newPhone,
       id:String(persons.length + 1)
     }
     
@@ -60,6 +60,19 @@ const App = () => {
     setSearchField(event.target.value);
   }
 
+  const deleteContact = id =>{
+    const contact = persons.find(n=>n.id==id)
+    if(window.confirm(`Do you really want to delete this contact? ${contact.name}`)){
+      Phone
+      .removeContact(id)
+      .then(data=>{
+        setPersons(persons.filter(contact=>contact.id!==id));
+      });
+      console.log("deletion successful.")
+
+    }
+  }
+
   useEffect(()=>{
     console.log("effect");
     axios
@@ -78,7 +91,7 @@ const App = () => {
       <PersonForms addName={addName} newName={newName} handleNameChange={handleNameChange}
       newPhone={newPhone} handlePhoneChange={handlePhoneChange}/>
 
-      <Numbers searchResult={searchResult}/>
+      <Numbers searchResult={searchResult} deleteContact={deleteContact}/>
       
     </div>
   )
