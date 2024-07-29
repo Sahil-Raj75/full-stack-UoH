@@ -3,7 +3,11 @@ const baseUrl = 'http://localhost:3001/persons'
 
 const getAll = () => {
     const request = axios.get(baseUrl)
-    return request.then(response => response.data)
+    return request
+    .then(response => response.data)
+    .catch(err=>{
+      console.log('failed request');
+    })
   }
   
   const create = newObject => {
@@ -13,7 +17,14 @@ const getAll = () => {
   
   const update = (id, newObject) => {
     const request = axios.put(`${baseUrl}/${id}`, newObject)
-    return request.then(response => response.data)
+    return request
+    .then(response => response.data)
+    .catch(err=>{
+      setMessage('The contact has already been deleted');
+      setTimeout(()=>{
+        setMessage(null);
+      },2000);
+    })
   }
 
   const removeContact = (id)=>{
@@ -23,8 +34,10 @@ const getAll = () => {
 
   const updateContact = (contact)=>{
     const request = axios.put(`${baseUrl}/${contact.id}`, {...contact, "number":contact.number})
-    return request.then(response=>response.data)
+    return request
+    .then(response=>response.data)
   }
+
 
   
   export default { 

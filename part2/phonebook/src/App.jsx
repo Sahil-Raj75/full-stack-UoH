@@ -46,6 +46,12 @@ const App = () => {
             },2000);
               
           })
+          .catch(err=>{
+            setMessage('contact already deleted from server');
+            setTimeout(()=>{
+              setMessage(null);
+            },1000);
+          })
         }
     }else{
       event.preventDefault();
@@ -60,9 +66,10 @@ const App = () => {
       .then(phoneData=>{
         console.log(phoneData);
         setPersons(persons.concat(phoneData));
+        setMessage(`Added ${newContact.name}`)
         setTimeout(()=>{
-          setMessage(`Added ${newContact.name}`)
-        })
+          setMessage(null);
+        },2000)
         setNewName('');
         setNewPhone('');
       })
